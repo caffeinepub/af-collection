@@ -1,4 +1,12 @@
-import { ChevronDown, Menu, Quote, Star, X } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  Quote,
+  Star,
+  X,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { SiWhatsapp } from "react-icons/si";
@@ -15,7 +23,7 @@ function whatsappOrderLink(productName: string) {
 const CATEGORY_IMAGES: Record<string, string> = {
   [Category.clothes]: "/assets/generated/product-clothes.dim_600x600.jpg",
   [Category.sunglasses]: "/assets/generated/product-sunglasses.dim_600x600.jpg",
-  [Category.watches]: "/assets/generated/product-watches.dim_600x600.jpg",
+  [Category.watches]: "/assets/uploads/69b5c07795d991-1-1.jpg",
   [Category.caps]: "/assets/generated/product-caps.dim_600x600.jpg",
 };
 
@@ -70,19 +78,13 @@ const SAMPLE_PRODUCTS: Product[] = [
     price: "",
   },
   {
-    name: "Chronos Gold Watch",
-    description: "Sapphire crystal, leather strap",
+    name: "Rolex x Day Date Quartz",
+    description: "Best Quality | Quartz Movement",
     category: Category.watches,
-    price: "",
+    price: "₹1,099",
   },
   {
-    name: "Obsidian Diver Watch",
-    description: "Water resistant 200m",
-    category: Category.watches,
-    price: "",
-  },
-  {
-    name: "Gold Crown Snapback",
+    name: "Green Crown Snapback",
     description: "Premium embroidered logo",
     category: Category.caps,
     price: "",
@@ -104,11 +106,22 @@ const NAV_LINKS = [
   { label: "Contact", id: "contact" },
 ];
 
+const MOBILE_NAV_LINKS = NAV_LINKS.slice(0, 5);
+
 const ABOUT_STATS = [
   { num: "500+", label: "Happy Customers" },
   { num: "100%", label: "Authentic Products" },
   { num: "4", label: "Premium Categories" },
   { num: "24/7", label: "WhatsApp Support" },
+];
+
+const WATCH_IMAGES = [
+  "/assets/uploads/69b5c07795d991-1-1.jpg",
+  "/assets/uploads/69b5c07795d991-1.jpg",
+  "/assets/uploads/69b5c077961254-2.jpg",
+  "/assets/uploads/69b5c07795bbd0-3.jpg",
+  "/assets/uploads/69b5c077960113-4.jpg",
+  "/assets/uploads/69b5c07795ebe2-5.jpg",
 ];
 
 // Nav
@@ -123,71 +136,84 @@ function Navbar({ onNav }: { onNav: (id: string) => void }) {
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-black/95 backdrop-blur-sm border-b border-gold/20 shadow-gold"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 sm:h-20">
-        <button
-          type="button"
-          className="font-display text-xl sm:text-2xl font-bold tracking-widest gold-gradient-text cursor-pointer bg-transparent border-0 p-0"
-          onClick={() => onNav("hero")}
-        >
-          AF COLLECTION
-        </button>
-        <nav className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <button
-              type="button"
-              key={link.id}
-              data-ocid="nav.link"
-              onClick={() => onNav(link.id)}
-              className="text-sm tracking-widest uppercase text-foreground/70 hover:text-gold transition-colors duration-200"
-            >
-              {link.label}
-            </button>
-          ))}
-        </nav>
-        <button
-          type="button"
-          className="md:hidden text-foreground p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </div>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/98 border-t border-gold/20"
+    <>
+      {/* Backdrop: closes menu when tapping outside */}
+      {open && (
+        <div
+          className="fixed inset-0 z-40 bg-black/30"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+          onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
+        />
+      )}
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-[#006039]/95 backdrop-blur-sm border-b border-white/20 shadow-lg"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 sm:h-20">
+          <button
+            type="button"
+            className="font-display text-xl sm:text-2xl font-bold tracking-widest text-white cursor-pointer bg-transparent border-0 p-0"
+            onClick={() => onNav("hero")}
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
-              {NAV_LINKS.map((link) => (
-                <button
-                  type="button"
-                  key={link.id}
-                  data-ocid="nav.link"
-                  onClick={() => {
-                    onNav(link.id);
-                    setOpen(false);
-                  }}
-                  className="text-left text-sm tracking-widest uppercase text-foreground/70 hover:text-gold transition-colors py-2 border-b border-white/5"
-                >
-                  {link.label}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+            AF COLLECTION
+          </button>
+          <nav className="hidden md:flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
+              <button
+                type="button"
+                key={link.id}
+                data-ocid="nav.link"
+                onClick={() => onNav(link.id)}
+                className="text-sm tracking-widest uppercase text-white/80 hover:text-white transition-colors duration-200 font-semibold"
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+          <button
+            type="button"
+            className="md:hidden text-white p-2"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden bg-[#006039]/98 border-t border-white/20"
+            >
+              <div className="px-6 py-4 flex flex-col gap-4">
+                {MOBILE_NAV_LINKS.map((link) => (
+                  <button
+                    type="button"
+                    key={link.id}
+                    data-ocid="nav.link"
+                    onClick={() => {
+                      onNav(link.id);
+                      setOpen(false);
+                    }}
+                    style={{ position: "relative", zIndex: 60 }}
+                    className="text-left text-sm tracking-widest uppercase text-white font-bold hover:text-white/70 transition-colors py-2 border-b border-white/10"
+                  >
+                    {link.label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   );
 }
 
@@ -203,17 +229,18 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
         style={{
           backgroundImage:
             "url('/assets/generated/hero-banner.dim_1200x700.jpg')",
+          filter: "brightness(1.15) contrast(1.05)",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/90" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#006039]/70 via-[#006039]/40 to-[#006039]/80" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#006039]/20 via-transparent to-[#006039]/20" />
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-xs sm:text-sm tracking-[0.5em] uppercase text-gold/80 mb-4 font-sans"
+          className="text-xs sm:text-sm tracking-[0.5em] uppercase text-white/70 mb-4 font-sans"
         >
           Premium Men's Fashion
         </motion.div>
@@ -221,7 +248,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="font-display text-5xl sm:text-7xl md:text-8xl font-bold tracking-widest gold-gradient-text mb-4 leading-none"
+          className="font-display text-5xl sm:text-7xl md:text-8xl font-bold tracking-widest text-white mb-4 leading-none"
         >
           AF
         </motion.h1>
@@ -237,7 +264,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="w-24 h-px gold-bg mx-auto mb-8"
+          className="w-24 h-px bg-white/40 mx-auto mb-8"
         />
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -257,7 +284,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
             type="button"
             data-ocid="hero.primary_button"
             onClick={onShopNow}
-            className="px-10 py-4 gold-bg text-black font-semibold tracking-widest uppercase text-sm hover:bg-gold-light transition-all duration-300 shadow-gold hover:shadow-gold-lg hover:scale-105"
+            className="btn-green px-10 py-4"
           >
             Shop Now
           </button>
@@ -265,8 +292,9 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
             href={WHATSAPP_BASE}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-10 py-4 border border-gold/60 text-gold font-semibold tracking-widest uppercase text-sm hover:border-gold hover:bg-gold/10 transition-all duration-300"
+            className="btn-green inline-flex items-center gap-2 px-10 py-4"
           >
+            <SiWhatsapp size={16} />
             Order on WhatsApp
           </a>
         </motion.div>
@@ -285,7 +313,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
         >
-          <ChevronDown size={20} className="text-gold/60" />
+          <ChevronDown size={20} className="text-white/60" />
         </motion.div>
       </motion.div>
     </section>
@@ -302,7 +330,7 @@ const CATEGORIES = [
 
 function Categories({ onFilter }: { onFilter: (cat: string) => void }) {
   return (
-    <section id="categories" className="py-24 bg-black">
+    <section id="categories" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -311,13 +339,13 @@ function Categories({ onFilter }: { onFilter: (cat: string) => void }) {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-gold/70 mb-3 font-sans">
+          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
             Browse By
           </p>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a]">
             Collections
           </h2>
-          <div className="w-16 h-px gold-bg mx-auto mt-6" />
+          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
         </motion.div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -341,21 +369,220 @@ function Categories({ onFilter }: { onFilter: (cat: string) => void }) {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-              <div className="absolute inset-0 border border-transparent group-hover:border-gold/40 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#004a2b]/90 via-[#006039]/30 to-transparent" />
+              <div className="absolute inset-0 border border-transparent group-hover:border-[#006039]/60 transition-colors duration-300" />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                <p className="text-gold/70 text-xs tracking-widest uppercase mb-1 font-sans">
+                <p className="text-white/70 text-xs tracking-widest uppercase mb-1 font-sans">
                   {cat.subtitle}
                 </p>
                 <h3 className="font-display text-lg sm:text-xl font-bold text-white mb-3">
                   {cat.label}
                 </h3>
-                <span className="text-xs tracking-widest uppercase text-gold border-b border-gold/40 pb-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-sans">
+                <span className="text-xs tracking-widest uppercase text-white border-b border-white/40 pb-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-sans">
                   View Collection →
                 </span>
               </div>
             </motion.button>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Watch Collection Featured Section
+function WatchCollection() {
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const prev = () =>
+    setActiveIdx((i) => (i === 0 ? WATCH_IMAGES.length - 1 : i - 1));
+  const next = () =>
+    setActiveIdx((i) => (i === WATCH_IMAGES.length - 1 ? 0 : i + 1));
+
+  return (
+    <section id="watch-collection" className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14"
+        >
+          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
+            Exclusive
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a]">
+            Watch Collection
+          </h2>
+          <p className="text-sm tracking-widest uppercase text-[#006039]/70 mt-3 font-sans">
+            Precision Crafted Timepieces
+          </p>
+          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Image Gallery */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative"
+          >
+            {/* Main image */}
+            <div className="relative overflow-hidden bg-[#f8faf9] aspect-square">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeIdx}
+                  src={WATCH_IMAGES[activeIdx]}
+                  alt={`Rolex x Day Date Quartz - view ${activeIdx + 1}`}
+                  initial={{ opacity: 0, scale: 1.04 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full object-cover"
+                />
+              </AnimatePresence>
+
+              {/* Discount badge */}
+              <div className="absolute top-4 left-4 bg-[#006039] text-white text-xs font-bold px-3 py-1.5 tracking-widest uppercase font-sans">
+                86% OFF
+              </div>
+
+              {/* Prev/Next arrows */}
+              <button
+                type="button"
+                data-ocid="watch.secondary_button"
+                onClick={prev}
+                aria-label="Previous image"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105"
+              >
+                <ChevronLeft size={20} className="text-[#006039]" />
+              </button>
+              <button
+                type="button"
+                data-ocid="watch.primary_button"
+                onClick={next}
+                aria-label="Next image"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105"
+              >
+                <ChevronRight size={20} className="text-[#006039]" />
+              </button>
+            </div>
+
+            {/* Thumbnail dots */}
+            <div className="flex justify-center gap-2 mt-4">
+              {WATCH_IMAGES.map((src, i) => (
+                <button
+                  type="button"
+                  key={src}
+                  data-ocid={"watch.toggle"}
+                  onClick={() => setActiveIdx(i)}
+                  aria-label={`View image ${i + 1}`}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
+                    i === activeIdx
+                      ? "bg-[#006039] scale-125"
+                      : "bg-[#006039]/25 hover:bg-[#006039]/60"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Thumbnail strip */}
+            <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
+              {WATCH_IMAGES.map((src, i) => (
+                <button
+                  type="button"
+                  key={src}
+                  onClick={() => setActiveIdx(i)}
+                  aria-label={`Thumbnail ${i + 1}`}
+                  className={`flex-shrink-0 w-14 h-14 overflow-hidden border-2 transition-all duration-200 ${
+                    i === activeIdx
+                      ? "border-[#006039]"
+                      : "border-transparent hover:border-[#006039]/40"
+                  }`}
+                >
+                  <img
+                    src={src}
+                    alt={`Watch thumbnail ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Product Details */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="flex flex-col gap-6"
+          >
+            <div>
+              <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-2 font-sans font-semibold">
+                Watch Collection
+              </p>
+              <h3 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a1a] leading-tight mb-1">
+                Rolex x Day Date Quartz
+              </h3>
+              <p className="text-sm tracking-widest uppercase text-[#006039]/70 font-sans">
+                Best Quality
+              </p>
+            </div>
+
+            <div className="w-12 h-px bg-[#006039]" />
+
+            {/* Price block */}
+            <div className="flex items-end gap-4">
+              <span className="font-display text-4xl font-bold text-[#006039]">
+                ₹1,099
+              </span>
+              <div className="flex flex-col pb-1">
+                <span className="text-sm text-gray-400 line-through font-sans">
+                  ₹7,399
+                </span>
+                <span className="text-xs font-bold text-white bg-[#006039] px-2 py-0.5 tracking-widest font-sans">
+                  86% OFF
+                </span>
+              </div>
+            </div>
+
+            {/* Features */}
+            <ul className="flex flex-col gap-2">
+              {[
+                "Premium Quartz Movement",
+                "Stainless Steel Case",
+                "Day-Date Display",
+                "Best Quality Finish",
+              ].map((feat) => (
+                <li
+                  key={feat}
+                  className="flex items-center gap-3 text-sm text-[#1a1a1a]/80 font-sans"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#006039] flex-shrink-0" />
+                  {feat}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              data-ocid="watch.button"
+              href={whatsappOrderLink("Rolex x Day Date Quartz - Best Quality")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 py-4 px-8 text-sm mt-2 bg-[#006039] text-white font-semibold tracking-widest uppercase hover:bg-[#00875a] transition-colors duration-200"
+            >
+              <SiWhatsapp size={18} />
+              Order on WhatsApp
+            </a>
+
+            <p className="text-xs text-[#006039]/60 tracking-widest font-sans uppercase">
+              Direct order via WhatsApp · Fast delivery
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -375,7 +602,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: (index % 4) * 0.08 }}
-      className="group bg-card border border-border hover:border-gold/40 transition-all duration-300"
+      className="group bg-white border border-border hover:border-[#006039]/50 transition-all duration-300 shadow-sm hover:shadow-md"
     >
       <div className="overflow-hidden aspect-square relative">
         <img
@@ -383,21 +610,21 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#006039]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute top-3 right-3">
-          <span className="text-xs bg-black/80 border border-gold/30 text-gold px-2 py-1 tracking-widest uppercase font-sans">
+          <span className="text-xs bg-[#006039] text-white px-2 py-1 tracking-widest uppercase font-sans">
             {CATEGORY_LABELS[product.category]}
           </span>
         </div>
       </div>
       <div className="p-4 sm:p-5">
-        <h3 className="font-display text-base sm:text-lg font-semibold text-white mb-1 group-hover:text-gold transition-colors duration-200">
+        <h3 className="font-display text-base sm:text-lg font-semibold text-[#1a1a1a] mb-1 group-hover:text-[#006039] transition-colors duration-200">
           {product.name}
         </h3>
         <p className="text-muted-foreground text-xs sm:text-sm mb-3 font-sans">
           {product.description}
         </p>
-        <p className="gold-text font-semibold text-base mb-4 tracking-wide font-sans">
+        <p className="text-[#006039] font-semibold text-base mb-4 tracking-wide font-sans">
           {price}
         </p>
         <a
@@ -405,7 +632,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           href={whatsappOrderLink(product.name)}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white text-sm font-semibold tracking-wider uppercase hover:bg-[#1ebe5b] transition-colors duration-200"
+          className="btn-green flex items-center justify-center gap-2 w-full py-3"
         >
           <SiWhatsapp size={16} />
           Order on WhatsApp
@@ -437,7 +664,7 @@ function Products({
   ];
 
   return (
-    <section id="products" className="py-24" style={{ background: "#0a0a0a" }}>
+    <section id="products" className="py-24" style={{ background: "#f8faf9" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -446,13 +673,13 @@ function Products({
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-gold/70 mb-3 font-sans">
+          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
             Handpicked For You
           </p>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a]">
             Our Products
           </h2>
-          <div className="w-16 h-px gold-bg mx-auto mt-6" />
+          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
         </motion.div>
 
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
@@ -462,11 +689,11 @@ function Products({
               key={tab.key}
               data-ocid="products.tab"
               onClick={() => onFilterChange(tab.key)}
-              className={`px-5 py-2 text-xs tracking-widest uppercase font-sans transition-all duration-200 ${
+              className={
                 activeFilter === tab.key
-                  ? "gold-bg text-black font-semibold"
-                  : "border border-border text-muted-foreground hover:border-gold/40 hover:text-gold"
-              }`}
+                  ? "btn-green px-5 py-2 text-xs"
+                  : "px-5 py-2 text-xs tracking-widest uppercase font-sans transition-all duration-200 border border-[#006039]/30 text-[#006039] hover:border-[#006039] hover:bg-[#006039]/5"
+              }
             >
               {tab.label}
             </button>
@@ -477,7 +704,7 @@ function Products({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton placeholders
-              <div key={i} className="bg-card animate-pulse">
+              <div key={i} className="bg-white animate-pulse shadow-sm">
                 <div className="aspect-square bg-muted" />
                 <div className="p-4 space-y-3">
                   <div className="h-4 bg-muted rounded w-3/4" />
@@ -521,9 +748,13 @@ function Products({
 // About
 function About() {
   return (
-    <section id="about" className="py-24 bg-black relative overflow-hidden">
+    <section
+      id="about"
+      className="py-24 relative overflow-hidden"
+      style={{ background: "#006039" }}
+    >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <span className="font-display text-[12vw] font-bold text-white/[0.03] tracking-widest whitespace-nowrap">
+        <span className="font-display text-[12vw] font-bold text-white/[0.04] tracking-widest whitespace-nowrap">
           AF COLLECTION
         </span>
       </div>
@@ -535,28 +766,28 @@ function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <p className="text-xs tracking-[0.4em] uppercase text-gold/70 mb-3 font-sans">
+            <p className="text-xs tracking-[0.4em] uppercase text-white/70 mb-3 font-sans">
               Our Story
             </p>
             <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
               Crafted for the
-              <span className="block gold-gradient-text">Modern Gentleman</span>
+              <span className="block text-white/80">Modern Gentleman</span>
             </h2>
-            <div className="w-12 h-px gold-bg mb-8" />
-            <p className="text-foreground/70 leading-relaxed text-base sm:text-lg font-sans mb-6">
+            <div className="w-12 h-px bg-white/40 mb-8" />
+            <p className="text-white/80 leading-relaxed text-base sm:text-lg font-sans mb-6">
               AF COLLECTION is a premium men's fashion brand crafted for the
               modern gentleman. We curate the finest clothes, accessories, and
               lifestyle products that blend style with confidence.
             </p>
-            <p className="text-foreground/70 leading-relaxed text-base font-sans mb-8">
+            <p className="text-white/80 leading-relaxed text-base font-sans mb-8">
               Every piece is chosen to make you stand out — because true style
-              is not followed, it’s led.
+              is not followed, it's led.
             </p>
             <a
               href={WHATSAPP_BASE}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3 gold-bg text-black font-semibold tracking-widest uppercase text-sm hover:bg-gold-light transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-white text-[#006039] font-semibold text-xs tracking-widest uppercase hover:bg-white/90 transition-colors"
             >
               <SiWhatsapp size={16} />
               Get In Touch
@@ -573,12 +804,12 @@ function About() {
             {ABOUT_STATS.map((stat) => (
               <div
                 key={stat.label}
-                className="border border-gold/20 p-6 text-center hover:border-gold/50 transition-colors duration-300"
+                className="border border-white/20 p-6 text-center hover:border-white/50 transition-colors duration-300"
               >
-                <div className="font-display text-3xl font-bold gold-gradient-text mb-2">
+                <div className="font-display text-3xl font-bold text-white mb-2">
                   {stat.num}
                 </div>
-                <div className="text-xs tracking-widest uppercase text-muted-foreground font-sans">
+                <div className="text-xs tracking-widest uppercase text-white/60 font-sans">
                   {stat.label}
                 </div>
               </div>
@@ -597,7 +828,7 @@ function StarRating() {
   return (
     <div className="flex gap-1 mb-3">
       {STAR_INDICES.map((n) => (
-        <Star key={n} size={14} style={{ color: "#C9A84C", fill: "#C9A84C" }} />
+        <Star key={n} size={14} style={{ color: "#006039", fill: "#006039" }} />
       ))}
     </div>
   );
@@ -609,7 +840,7 @@ function Reviews() {
     reviews && reviews.length > 0 ? reviews : SAMPLE_REVIEWS;
 
   return (
-    <section id="reviews" className="py-24" style={{ background: "#060606" }}>
+    <section id="reviews" className="py-24" style={{ background: "#f0f7f4" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -618,13 +849,13 @@ function Reviews() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-gold/70 mb-3 font-sans">
+          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
             What They Say
           </p>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#004a2b]">
             Customer Reviews
           </h2>
-          <div className="w-16 h-px gold-bg mx-auto mt-6" />
+          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -635,26 +866,26 @@ function Reviews() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-card border border-border hover:border-gold/30 transition-colors duration-300 p-6 sm:p-8 relative"
+              className="bg-white border border-border hover:border-[#006039]/40 transition-colors duration-300 p-6 sm:p-8 relative shadow-sm hover:shadow-md"
             >
               <Quote
                 size={32}
                 className="absolute top-4 right-4"
-                style={{ color: "rgba(201,168,76,0.2)" }}
+                style={{ color: "rgba(0,96,57,0.15)" }}
               />
               <StarRating />
-              <p className="text-foreground/80 leading-relaxed text-sm sm:text-base mb-6 font-sans italic">
+              <p className="text-[#1a1a1a]/80 leading-relaxed text-sm sm:text-base mb-6 font-sans italic">
                 "{review.reviewText}"
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full gold-bg flex items-center justify-center text-black font-bold font-display text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#006039] flex items-center justify-center text-white font-bold font-display text-sm">
                   {review.customerName.charAt(0)}
                 </div>
                 <div>
-                  <p className="font-semibold text-white text-sm font-sans">
+                  <p className="font-semibold text-[#1a1a1a] text-sm font-sans">
                     {review.customerName}
                   </p>
-                  <p className="text-xs text-gold/60 tracking-widest font-sans">
+                  <p className="text-xs text-[#006039]/70 tracking-widest font-sans">
                     Verified Buyer
                   </p>
                 </div>
@@ -670,13 +901,17 @@ function Reviews() {
 // Contact
 function Contact() {
   return (
-    <section id="contact" className="py-24 bg-black relative overflow-hidden">
+    <section
+      id="contact"
+      className="py-24 relative overflow-hidden"
+      style={{ background: "#006039" }}
+    >
       <div className="absolute inset-0 pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%)",
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, transparent 70%)",
           }}
         />
       </div>
@@ -687,17 +922,17 @@ function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-gold/70 mb-3 font-sans">
+          <p className="text-xs tracking-[0.4em] uppercase text-white/70 mb-3 font-sans">
             Reach Out
           </p>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6">
             Get In Touch
           </h2>
-          <div className="w-16 h-px gold-bg mx-auto mb-8" />
-          <p className="text-foreground/70 text-lg mb-4 font-sans">
+          <div className="w-16 h-px bg-white/40 mx-auto mb-8" />
+          <p className="text-white/80 text-lg mb-4 font-sans">
             Have a question or want to place a custom order?
           </p>
-          <p className="text-foreground/70 mb-10 font-sans">
+          <p className="text-white/80 mb-10 font-sans">
             Reach us directly on WhatsApp — we respond fast.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
@@ -706,13 +941,13 @@ function Contact() {
               href={WHATSAPP_BASE}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-10 py-4 bg-[#25D366] text-white font-bold tracking-widest uppercase text-sm hover:bg-[#1ebe5b] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              className="inline-flex items-center gap-3 px-10 py-4 bg-white text-[#006039] font-semibold text-xs tracking-widest uppercase hover:bg-white/90 transition-colors"
             >
               <SiWhatsapp size={20} />
               Chat on WhatsApp
             </a>
           </div>
-          <p className="text-gold font-semibold text-xl tracking-widest font-sans">
+          <p className="text-white font-semibold text-xl tracking-widest font-sans">
             📱 +91 7977433269
           </p>
         </motion.div>
@@ -728,14 +963,17 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
     typeof window !== "undefined" ? window.location.hostname : "";
 
   return (
-    <footer className="bg-black border-t border-gold/20 py-12 sm:py-16">
+    <footer
+      className="border-t border-white/10 py-12 sm:py-16"
+      style={{ background: "#004a2b" }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid sm:grid-cols-3 gap-8 mb-10">
           <div>
-            <div className="font-display text-2xl font-bold tracking-widest gold-gradient-text mb-3">
+            <div className="font-display text-2xl font-bold tracking-widest text-white mb-3">
               AF COLLECTION
             </div>
-            <p className="text-muted-foreground text-sm font-sans">
+            <p className="text-white/60 text-sm font-sans">
               Dress Different. Lead the Style.
             </p>
             <div className="mt-4">
@@ -743,7 +981,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
                 href={WHATSAPP_BASE}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-[#25D366] hover:text-[#1ebe5b] transition-colors font-sans"
+                className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors font-sans"
               >
                 <SiWhatsapp size={16} />
                 +91 7977433269
@@ -751,7 +989,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
             </div>
           </div>
           <div>
-            <h4 className="text-xs tracking-[0.3em] uppercase text-gold/70 mb-4 font-sans">
+            <h4 className="text-xs tracking-[0.3em] uppercase text-white/60 mb-4 font-sans">
               Navigation
             </h4>
             <div className="flex flex-col gap-2">
@@ -760,7 +998,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
                   type="button"
                   key={link.id}
                   onClick={() => onNav(link.id)}
-                  className="text-left text-sm text-muted-foreground hover:text-gold transition-colors font-sans"
+                  className="text-left text-sm text-white/50 hover:text-white transition-colors font-sans"
                 >
                   {link.label}
                 </button>
@@ -768,7 +1006,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
             </div>
           </div>
           <div>
-            <h4 className="text-xs tracking-[0.3em] uppercase text-gold/70 mb-4 font-sans">
+            <h4 className="text-xs tracking-[0.3em] uppercase text-white/60 mb-4 font-sans">
               Collections
             </h4>
             <div className="flex flex-col gap-2">
@@ -777,7 +1015,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
                   type="button"
                   key={cat.key}
                   onClick={() => onNav("products")}
-                  className="text-left text-sm text-muted-foreground hover:text-gold transition-colors font-sans"
+                  className="text-left text-sm text-white/50 hover:text-white transition-colors font-sans"
                 >
                   {cat.label}
                 </button>
@@ -785,7 +1023,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
             </div>
           </div>
         </div>
-        <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-muted-foreground font-sans">
+        <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/40 font-sans">
           <p>© {year} AF COLLECTION. All rights reserved.</p>
           <p>
             Built with ❤️ using{" "}
@@ -793,7 +1031,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
               href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(hostname)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-gold transition-colors"
+              className="hover:text-white transition-colors"
             >
               caffeine.ai
             </a>
@@ -817,12 +1055,15 @@ function FloatingWhatsApp() {
       transition={{ delay: 2, type: "spring", stiffness: 200 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:bg-[#1ebe5b] transition-colors"
+      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#006039] rounded-full flex items-center justify-center shadow-lg transition-colors"
+      style={{
+        boxShadow: "0 4px 20px rgba(0, 96, 57, 0.5)",
+      }}
       aria-label="Chat on WhatsApp"
     >
       <SiWhatsapp size={28} className="text-white" />
       <motion.span
-        className="absolute inset-0 rounded-full bg-[#25D366]"
+        className="absolute inset-0 rounded-full bg-[#006039]"
         animate={{ scale: [1, 1.4], opacity: [0.5, 0] }}
         transition={{
           repeat: Number.POSITIVE_INFINITY,
@@ -860,6 +1101,7 @@ export default function App() {
       <main>
         <Hero onShopNow={() => scrollTo("products")} />
         <Categories onFilter={handleCategoryFilter} />
+        <WatchCollection />
         <Products
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
