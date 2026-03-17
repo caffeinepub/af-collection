@@ -222,17 +222,17 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-[75vh] sm:min-h-[80vh] flex items-center justify-center overflow-hidden"
     >
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage:
-            "url('/assets/generated/hero-suit-man.dim_1920x1080.jpg')",
+            "url('/assets/uploads/Screenshot_2026-03-17-08-19-55-39-1.jpg')",
           filter: "brightness(1.15) contrast(1.05)",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#006039]/70 via-[#006039]/40 to-[#006039]/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#006039]/60 via-[#006039]/35 to-[#006039]/75" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#006039]/20 via-transparent to-[#006039]/20" />
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
@@ -248,7 +248,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="font-display text-5xl sm:text-7xl md:text-8xl font-bold tracking-widest text-white mb-4 leading-none"
+          className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest text-white mb-4 leading-none"
         >
           AF
         </motion.h1>
@@ -256,7 +256,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-[0.4em] text-white mb-8"
+          className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-[0.4em] text-white mb-8"
         >
           COLLECTION
         </motion.h1>
@@ -270,7 +270,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.0 }}
-          className="text-lg sm:text-xl text-white/80 tracking-widest font-light mb-12 font-sans"
+          className="text-sm sm:text-base text-white/80 tracking-widest font-light mb-8 font-sans"
         >
           Dress Different. Lead the Style.
         </motion.p>
@@ -284,7 +284,7 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
             type="button"
             data-ocid="hero.primary_button"
             onClick={onShopNow}
-            className="btn-green px-10 py-4"
+            className="bg-[#006039] text-white rounded-full px-8 py-3 text-sm tracking-widest uppercase font-semibold hover:bg-[#00875a] transition-colors duration-200"
           >
             Shop Now
           </button>
@@ -292,7 +292,8 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
             href={WHATSAPP_BASE}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-green inline-flex items-center gap-2 px-10 py-4"
+            data-ocid="hero.secondary_button"
+            className="border border-white text-white rounded-full inline-flex items-center gap-2 px-8 py-3 text-sm tracking-widest uppercase font-semibold hover:bg-white/10 transition-colors duration-200"
           >
             <SiWhatsapp size={16} />
             Order on WhatsApp
