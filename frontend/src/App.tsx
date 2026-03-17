@@ -1,15 +1,19 @@
 import {
+  Award,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Menu,
+  MessageCircle,
   Quote,
   Star,
+  Tag,
   X,
+  Zap,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { SiWhatsapp } from "react-icons/si";
+import { SiInstagram, SiWhatsapp } from "react-icons/si";
 import { useActor } from "./hooks/useActor";
 import { Category, useAllProducts, useAllReviews } from "./hooks/useQueries";
 import type { Product, Review } from "./hooks/useQueries";
@@ -22,7 +26,7 @@ function whatsappOrderLink(productName: string) {
 
 const CATEGORY_IMAGES: Record<string, string> = {
   [Category.clothes]: "/assets/generated/product-clothes.dim_600x600.jpg",
-  [Category.sunglasses]: "/assets/generated/product-sunglasses.dim_600x600.jpg",
+  [Category.sunglasses]: "/assets/generated/product-clothes.dim_600x600.jpg",
   [Category.watches]: "/assets/uploads/69b5c07795d991-1-1.jpg",
   [Category.caps]: "/assets/generated/product-caps.dim_600x600.jpg",
 };
@@ -37,18 +41,15 @@ const CATEGORY_LABELS: Record<string, string> = {
 const SAMPLE_REVIEWS: Review[] = [
   {
     customerName: "Rahul M.",
-    reviewText:
-      "Amazing quality! The watch I ordered is exactly as described. Fast delivery and great packaging.",
+    reviewText: "Amazing quality 🔥 - got so many compliments!",
   },
   {
     customerName: "Arjun K.",
-    reviewText:
-      "AF Collection has the best style picks. Ordered sunglasses and got so many compliments!",
+    reviewText: "Value for money! Best watch I've ordered online.",
   },
   {
     customerName: "Vikas S.",
-    reviewText:
-      "Premium quality caps, worth every rupee. Will definitely order again!",
+    reviewText: "Fast delivery and great packaging. Loved it!",
   },
 ];
 
@@ -103,16 +104,6 @@ const NAV_LINKS = [
   { label: "Products", id: "products" },
   { label: "About", id: "about" },
   { label: "Reviews", id: "reviews" },
-  { label: "Contact", id: "contact" },
-];
-
-const MOBILE_NAV_LINKS = NAV_LINKS.slice(0, 5);
-
-const ABOUT_STATS = [
-  { num: "500+", label: "Happy Customers" },
-  { num: "100%", label: "Authentic Products" },
-  { num: "4", label: "Premium Categories" },
-  { num: "24/7", label: "WhatsApp Support" },
 ];
 
 const WATCH_IMAGES = [
@@ -122,6 +113,87 @@ const WATCH_IMAGES = [
   "/assets/uploads/69b5c07795bbd0-3.jpg",
   "/assets/uploads/69b5c077960113-4.jpg",
   "/assets/uploads/69b5c07795ebe2-5.jpg",
+];
+
+const TRENDING_PRODUCTS = [
+  {
+    name: "Rolex x Day Date Quartz",
+    subtitle: "Best Quality",
+    price: "₹1,099",
+    mrp: "₹7,399",
+    discount: "86% OFF",
+    image: "/assets/uploads/69b5c07795d991-1-1.jpg",
+  },
+  {
+    name: "Classic Black Shirt",
+    subtitle: "Premium Cotton Slim Fit",
+    price: "₹999",
+    mrp: null,
+    discount: null,
+    image: "/assets/generated/product-clothes.dim_600x600.jpg",
+  },
+  {
+    name: "Slim Fit T-Shirt",
+    subtitle: "Breathable Soft Fabric",
+    price: "₹599",
+    mrp: null,
+    discount: null,
+    image: "/assets/generated/product-clothes.dim_600x600.jpg",
+  },
+  {
+    name: "Combo Style Pack",
+    subtitle: "Shirt + Cap Bundle",
+    price: "₹1,499",
+    mrp: null,
+    discount: null,
+    image: "/assets/generated/product-caps.dim_600x600.jpg",
+  },
+];
+
+const NEW_CATEGORIES = [
+  {
+    label: "Shirts",
+    subtitle: "Premium Fits",
+    image: "/assets/generated/product-clothes.dim_600x600.jpg",
+  },
+  {
+    label: "T-Shirts",
+    subtitle: "Street Essentials",
+    image: "/assets/generated/product-clothes.dim_600x600.jpg",
+  },
+  {
+    label: "Watches",
+    subtitle: "Precision Crafted",
+    image: "/assets/uploads/69b5c07795d991-1-1.jpg",
+  },
+  {
+    label: "Combo Offers",
+    subtitle: "Best Value",
+    image: "/assets/generated/product-caps.dim_600x600.jpg",
+  },
+];
+
+const WHY_CHOOSE_US = [
+  {
+    icon: Award,
+    title: "Premium Quality",
+    desc: "Only the finest materials and craftsmanship",
+  },
+  {
+    icon: Tag,
+    title: "Affordable Prices",
+    desc: "Premium style at prices that make sense",
+  },
+  {
+    icon: Zap,
+    title: "Fast Delivery",
+    desc: "Quick delivery straight to your door",
+  },
+  {
+    icon: MessageCircle,
+    title: "Easy WhatsApp Support",
+    desc: "Order and get support directly via WhatsApp",
+  },
 ];
 
 // Nav
@@ -137,7 +209,6 @@ function Navbar({ onNav }: { onNav: (id: string) => void }) {
 
   return (
     <>
-      {/* Backdrop: closes menu when tapping outside */}
       {open && (
         <div
           className="fixed inset-0 z-40 bg-black/30"
@@ -149,7 +220,7 @@ function Navbar({ onNav }: { onNav: (id: string) => void }) {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-[#006039]/95 backdrop-blur-sm border-b border-white/20 shadow-lg"
+            ? "bg-[#0B3D2E]/95 backdrop-blur-sm border-b border-white/20 shadow-lg"
             : "bg-transparent"
         }`}
       >
@@ -190,10 +261,10 @@ function Navbar({ onNav }: { onNav: (id: string) => void }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden bg-[#006039]/98 border-t border-white/20"
+              className="md:hidden bg-[#0B3D2E]/98 border-t border-white/20"
             >
               <div className="px-6 py-4 flex flex-col gap-4">
-                {MOBILE_NAV_LINKS.map((link) => (
+                {NAV_LINKS.map((link) => (
                   <button
                     type="button"
                     key={link.id}
@@ -229,11 +300,20 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
         style={{
           backgroundImage:
             "url('/assets/generated/hero-suit-man.dim_1920x1080.jpg')",
-          filter: "brightness(1.15) contrast(1.05)",
+          filter: "brightness(1.1) contrast(1.05)",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#006039]/70 via-[#006039]/40 to-[#006039]/80" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#006039]/20 via-transparent to-[#006039]/20" />
+      <div className="absolute inset-0 bg-[#0B3D2E]/60" />
+
+      {/* Faded watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span
+          className="font-display font-bold text-white tracking-widest whitespace-nowrap"
+          style={{ fontSize: "clamp(3rem, 15vw, 14rem)", opacity: 0.07 }}
+        >
+          AF COLLECTION
+        </span>
+      </div>
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <motion.div
@@ -292,7 +372,8 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
             href={WHATSAPP_BASE}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-green inline-flex items-center gap-2 px-10 py-4"
+            data-ocid="hero.secondary_button"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-full border-2 border-white text-white font-semibold text-xs tracking-widest uppercase hover:bg-white hover:text-[#0B3D2E] transition-colors duration-200"
           >
             <SiWhatsapp size={16} />
             Order on WhatsApp
@@ -320,15 +401,88 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
   );
 }
 
-// Categories
-const CATEGORIES = [
-  { key: Category.clothes, label: "Men's Clothes", subtitle: "Curated Fits" },
-  { key: Category.sunglasses, label: "Sunglasses", subtitle: "Bold Frames" },
-  { key: Category.watches, label: "Watches", subtitle: "Precision Crafted" },
-  { key: Category.caps, label: "Caps", subtitle: "Street Icons" },
-];
+// Trending Collection
+function TrendingCollection() {
+  return (
+    <section id="trending" className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <p className="text-xs tracking-[0.4em] uppercase text-[#0B3D2E] mb-3 font-sans font-semibold">
+            New Arrivals
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a]">
+            Trending Collection
+          </h2>
+          <div className="w-16 h-px bg-[#0B3D2E] mx-auto mt-6" />
+        </motion.div>
 
-function Categories({ onFilter }: { onFilter: (cat: string) => void }) {
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {TRENDING_PRODUCTS.map((product, i) => (
+            <motion.div
+              key={product.name}
+              data-ocid={`trending.item.${i + 1}`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="group bg-white border border-gray-100 hover:border-[#0B3D2E]/40 transition-all duration-300 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
+            >
+              <div className="overflow-hidden aspect-square relative">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {product.discount && (
+                  <div className="absolute top-3 left-3 bg-[#0B3D2E] text-white text-xs font-bold px-2 py-1 rounded-full tracking-widest font-sans">
+                    {product.discount}
+                  </div>
+                )}
+              </div>
+              <div className="p-4">
+                <h3 className="font-display text-sm sm:text-base font-semibold text-[#1a1a1a] mb-0.5 group-hover:text-[#0B3D2E] transition-colors">
+                  {product.name}
+                </h3>
+                <p className="text-[#CCCCCC] text-xs mb-2 font-sans">
+                  {product.subtitle}
+                </p>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-[#0B3D2E] font-bold text-base font-sans">
+                    {product.price}
+                  </span>
+                  {product.mrp && (
+                    <span className="text-gray-400 text-xs line-through font-sans">
+                      {product.mrp}
+                    </span>
+                  )}
+                </div>
+                <a
+                  data-ocid={`trending.button.${i + 1}`}
+                  href={whatsappOrderLink(product.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-green flex items-center justify-center gap-1.5 w-full py-2.5 text-xs"
+                >
+                  <SiWhatsapp size={14} />
+                  Order on WhatsApp
+                </a>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Categories
+function Categories({ onScrollToProducts }: { onScrollToProducts: () => void }) {
   return (
     <section id="categories" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -339,38 +493,37 @@ function Categories({ onFilter }: { onFilter: (cat: string) => void }) {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
+          <p className="text-xs tracking-[0.4em] uppercase text-[#0B3D2E] mb-3 font-sans font-semibold">
             Browse By
           </p>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a]">
             Collections
           </h2>
-          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
+          <div className="w-16 h-px bg-[#0B3D2E] mx-auto mt-6" />
         </motion.div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {CATEGORIES.map((cat, i) => (
+          {NEW_CATEGORIES.map((cat, i) => (
             <motion.button
               type="button"
-              key={cat.key}
+              key={cat.label}
               data-ocid={`category.item.${i + 1}`}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               whileHover={{ y: -6 }}
-              onClick={() => onFilter(cat.key)}
-              className="relative group cursor-pointer overflow-hidden text-left"
+              onClick={onScrollToProducts}
+              className="relative group cursor-pointer overflow-hidden text-left rounded-2xl"
             >
               <div className="aspect-square overflow-hidden">
                 <img
-                  src={CATEGORY_IMAGES[cat.key]}
+                  src={cat.image}
                   alt={cat.label}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#004a2b]/90 via-[#006039]/30 to-transparent" />
-              <div className="absolute inset-0 border border-transparent group-hover:border-[#006039]/60 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B3D2E]/90 via-[#0B3D2E]/30 to-transparent rounded-2xl" />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
                 <p className="text-white/70 text-xs tracking-widest uppercase mb-1 font-sans">
                   {cat.subtitle}
@@ -409,20 +562,19 @@ function WatchCollection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
+          <p className="text-xs tracking-[0.4em] uppercase text-[#0B3D2E] mb-3 font-sans font-semibold">
             Exclusive
           </p>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a]">
             Watch Collection
           </h2>
-          <p className="text-sm tracking-widest uppercase text-[#006039]/70 mt-3 font-sans">
+          <p className="text-sm tracking-widest uppercase text-[#0B3D2E]/70 mt-3 font-sans">
             Precision Crafted Timepieces
           </p>
-          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
+          <div className="w-16 h-px bg-[#0B3D2E] mx-auto mt-6" />
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Image Gallery */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -430,8 +582,7 @@ function WatchCollection() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            {/* Main image */}
-            <div className="relative overflow-hidden bg-[#f8faf9] aspect-square">
+            <div className="relative overflow-hidden bg-[#f8faf9] aspect-square rounded-2xl">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={activeIdx}
@@ -445,51 +596,47 @@ function WatchCollection() {
                 />
               </AnimatePresence>
 
-              {/* Discount badge */}
-              <div className="absolute top-4 left-4 bg-[#006039] text-white text-xs font-bold px-3 py-1.5 tracking-widest uppercase font-sans">
+              <div className="absolute top-4 left-4 bg-[#0B3D2E] text-white text-xs font-bold px-3 py-1.5 tracking-widest uppercase font-sans rounded-full">
                 86% OFF
               </div>
 
-              {/* Prev/Next arrows */}
               <button
                 type="button"
                 data-ocid="watch.secondary_button"
                 onClick={prev}
                 aria-label="Previous image"
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105"
               >
-                <ChevronLeft size={20} className="text-[#006039]" />
+                <ChevronLeft size={20} className="text-[#0B3D2E]" />
               </button>
               <button
                 type="button"
                 data-ocid="watch.primary_button"
                 onClick={next}
                 aria-label="Next image"
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105"
               >
-                <ChevronRight size={20} className="text-[#006039]" />
+                <ChevronRight size={20} className="text-[#0B3D2E]" />
               </button>
             </div>
 
-            {/* Thumbnail dots */}
             <div className="flex justify-center gap-2 mt-4">
               {WATCH_IMAGES.map((src, i) => (
                 <button
                   type="button"
                   key={src}
-                  data-ocid={"watch.toggle"}
+                  data-ocid="watch.toggle"
                   onClick={() => setActiveIdx(i)}
                   aria-label={`View image ${i + 1}`}
                   className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
                     i === activeIdx
-                      ? "bg-[#006039] scale-125"
-                      : "bg-[#006039]/25 hover:bg-[#006039]/60"
+                      ? "bg-[#0B3D2E] scale-125"
+                      : "bg-[#0B3D2E]/25 hover:bg-[#0B3D2E]/60"
                   }`}
                 />
               ))}
             </div>
 
-            {/* Thumbnail strip */}
             <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
               {WATCH_IMAGES.map((src, i) => (
                 <button
@@ -497,10 +644,10 @@ function WatchCollection() {
                   key={src}
                   onClick={() => setActiveIdx(i)}
                   aria-label={`Thumbnail ${i + 1}`}
-                  className={`flex-shrink-0 w-14 h-14 overflow-hidden border-2 transition-all duration-200 ${
+                  className={`flex-shrink-0 w-14 h-14 overflow-hidden border-2 rounded-lg transition-all duration-200 ${
                     i === activeIdx
-                      ? "border-[#006039]"
-                      : "border-transparent hover:border-[#006039]/40"
+                      ? "border-[#0B3D2E]"
+                      : "border-transparent hover:border-[#0B3D2E]/40"
                   }`}
                 >
                   <img
@@ -513,7 +660,6 @@ function WatchCollection() {
             </div>
           </motion.div>
 
-          {/* Product Details */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -522,35 +668,33 @@ function WatchCollection() {
             className="flex flex-col gap-6"
           >
             <div>
-              <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-2 font-sans font-semibold">
+              <p className="text-xs tracking-[0.4em] uppercase text-[#0B3D2E] mb-2 font-sans font-semibold">
                 Watch Collection
               </p>
               <h3 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a1a] leading-tight mb-1">
                 Rolex x Day Date Quartz
               </h3>
-              <p className="text-sm tracking-widest uppercase text-[#006039]/70 font-sans">
+              <p className="text-sm tracking-widest uppercase text-[#0B3D2E]/70 font-sans">
                 Best Quality
               </p>
             </div>
 
-            <div className="w-12 h-px bg-[#006039]" />
+            <div className="w-12 h-px bg-[#0B3D2E]" />
 
-            {/* Price block */}
             <div className="flex items-end gap-4">
-              <span className="font-display text-4xl font-bold text-[#006039]">
+              <span className="font-display text-4xl font-bold text-[#0B3D2E]">
                 ₹1,099
               </span>
               <div className="flex flex-col pb-1">
                 <span className="text-sm text-gray-400 line-through font-sans">
                   ₹7,399
                 </span>
-                <span className="text-xs font-bold text-white bg-[#006039] px-2 py-0.5 tracking-widest font-sans">
+                <span className="text-xs font-bold text-white bg-[#0B3D2E] px-2 py-0.5 tracking-widest font-sans rounded-full">
                   86% OFF
                 </span>
               </div>
             </div>
 
-            {/* Features */}
             <ul className="flex flex-col gap-2">
               {[
                 "Premium Quartz Movement",
@@ -562,7 +706,7 @@ function WatchCollection() {
                   key={feat}
                   className="flex items-center gap-3 text-sm text-[#1a1a1a]/80 font-sans"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#006039] flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0B3D2E] flex-shrink-0" />
                   {feat}
                 </li>
               ))}
@@ -573,16 +717,73 @@ function WatchCollection() {
               href={whatsappOrderLink("Rolex x Day Date Quartz - Best Quality")}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 py-4 px-8 text-sm mt-2 bg-[#006039] text-white font-semibold tracking-widest uppercase hover:bg-[#00875a] transition-colors duration-200"
+              className="btn-green inline-flex items-center justify-center gap-3 py-4 px-8 text-sm mt-2"
             >
               <SiWhatsapp size={18} />
               Order on WhatsApp
             </a>
 
-            <p className="text-xs text-[#006039]/60 tracking-widest font-sans uppercase">
+            <p className="text-xs text-[#0B3D2E]/60 tracking-widest font-sans uppercase">
               Direct order via WhatsApp · Fast delivery
             </p>
           </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Why Choose Us
+function WhyChooseUs() {
+  return (
+    <section
+      id="about"
+      className="py-24 relative overflow-hidden"
+      style={{ background: "#0B3D2E" }}
+    >
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span className="font-display text-[12vw] font-bold text-white/[0.04] tracking-widest whitespace-nowrap">
+          AF COLLECTION
+        </span>
+      </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <p className="text-xs tracking-[0.4em] uppercase text-white/60 mb-3 font-sans">
+            Our Promise
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white">
+            Why Choose Us
+          </h2>
+          <div className="w-16 h-px bg-white/40 mx-auto mt-6" />
+        </motion.div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {WHY_CHOOSE_US.map((item, i) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="border border-white/20 p-7 text-center hover:border-white/50 transition-all duration-300 rounded-2xl hover:bg-white/5"
+            >
+              <div className="flex items-center justify-center w-14 h-14 rounded-full border border-white/30 mx-auto mb-5">
+                <item.icon size={24} className="text-white" />
+              </div>
+              <h3 className="font-display text-lg font-bold text-white mb-2">
+                {item.title}
+              </h3>
+              <p className="text-white/60 text-sm font-sans leading-relaxed">
+                {item.desc}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -602,7 +803,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: (index % 4) * 0.08 }}
-      className="group bg-white border border-border hover:border-[#006039]/50 transition-all duration-300 shadow-sm hover:shadow-md"
+      className="group bg-white border border-border hover:border-[#0B3D2E]/50 transition-all duration-300 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
     >
       <div className="overflow-hidden aspect-square relative">
         <img
@@ -610,21 +811,21 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#006039]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B3D2E]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute top-3 right-3">
-          <span className="text-xs bg-[#006039] text-white px-2 py-1 tracking-widest uppercase font-sans">
+          <span className="text-xs bg-[#0B3D2E] text-white px-2 py-1 tracking-widest uppercase font-sans rounded-full">
             {CATEGORY_LABELS[product.category]}
           </span>
         </div>
       </div>
       <div className="p-4 sm:p-5">
-        <h3 className="font-display text-base sm:text-lg font-semibold text-[#1a1a1a] mb-1 group-hover:text-[#006039] transition-colors duration-200">
+        <h3 className="font-display text-base sm:text-lg font-semibold text-[#1a1a1a] mb-1 group-hover:text-[#0B3D2E] transition-colors duration-200">
           {product.name}
         </h3>
         <p className="text-muted-foreground text-xs sm:text-sm mb-3 font-sans">
           {product.description}
         </p>
-        <p className="text-[#006039] font-semibold text-base mb-4 tracking-wide font-sans">
+        <p className="text-[#0B3D2E] font-semibold text-base mb-4 tracking-wide font-sans">
           {price}
         </p>
         <a
@@ -673,13 +874,13 @@ function Products({
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
+          <p className="text-xs tracking-[0.4em] uppercase text-[#0B3D2E] mb-3 font-sans font-semibold">
             Handpicked For You
           </p>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#1a1a1a]">
             Our Products
           </h2>
-          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
+          <div className="w-16 h-px bg-[#0B3D2E] mx-auto mt-6" />
         </motion.div>
 
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
@@ -692,7 +893,7 @@ function Products({
               className={
                 activeFilter === tab.key
                   ? "btn-green px-5 py-2 text-xs"
-                  : "px-5 py-2 text-xs tracking-widest uppercase font-sans transition-all duration-200 border border-[#006039]/30 text-[#006039] hover:border-[#006039] hover:bg-[#006039]/5"
+                  : "px-5 py-2 text-xs tracking-widest uppercase font-sans transition-all duration-200 border border-[#0B3D2E]/30 text-[#0B3D2E] hover:border-[#0B3D2E] hover:bg-[#0B3D2E]/5 rounded-full"
               }
             >
               {tab.label}
@@ -704,12 +905,12 @@ function Products({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton placeholders
-              <div key={i} className="bg-white animate-pulse shadow-sm">
-                <div className="aspect-square bg-muted" />
+              <div key={i} className="bg-white animate-pulse shadow-sm rounded-2xl">
+                <div className="aspect-square bg-muted rounded-t-2xl" />
                 <div className="p-4 space-y-3">
                   <div className="h-4 bg-muted rounded w-3/4" />
                   <div className="h-3 bg-muted rounded w-1/2" />
-                  <div className="h-10 bg-muted rounded" />
+                  <div className="h-10 bg-muted rounded-full" />
                 </div>
               </div>
             ))}
@@ -725,7 +926,10 @@ function Products({
               className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
             >
               {filtered.length === 0 ? (
-                <div className="col-span-full text-center py-16 text-muted-foreground font-sans">
+                <div
+                  data-ocid="products.empty_state"
+                  className="col-span-full text-center py-16 text-muted-foreground font-sans"
+                >
                   No products in this category yet.
                 </div>
               ) : (
@@ -745,82 +949,6 @@ function Products({
   );
 }
 
-// About
-function About() {
-  return (
-    <section
-      id="about"
-      className="py-24 relative overflow-hidden"
-      style={{ background: "#006039" }}
-    >
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <span className="font-display text-[12vw] font-bold text-white/[0.04] tracking-widest whitespace-nowrap">
-          AF COLLECTION
-        </span>
-      </div>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-          >
-            <p className="text-xs tracking-[0.4em] uppercase text-white/70 mb-3 font-sans">
-              Our Story
-            </p>
-            <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
-              Crafted for the
-              <span className="block text-white/80">Modern Gentleman</span>
-            </h2>
-            <div className="w-12 h-px bg-white/40 mb-8" />
-            <p className="text-white/80 leading-relaxed text-base sm:text-lg font-sans mb-6">
-              AF COLLECTION is a premium men's fashion brand crafted for the
-              modern gentleman. We curate the finest clothes, accessories, and
-              lifestyle products that blend style with confidence.
-            </p>
-            <p className="text-white/80 leading-relaxed text-base font-sans mb-8">
-              Every piece is chosen to make you stand out — because true style
-              is not followed, it's led.
-            </p>
-            <a
-              href={WHATSAPP_BASE}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-white text-[#006039] font-semibold text-xs tracking-widest uppercase hover:bg-white/90 transition-colors"
-            >
-              <SiWhatsapp size={16} />
-              Get In Touch
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="grid grid-cols-2 gap-4"
-          >
-            {ABOUT_STATS.map((stat) => (
-              <div
-                key={stat.label}
-                className="border border-white/20 p-6 text-center hover:border-white/50 transition-colors duration-300"
-              >
-                <div className="font-display text-3xl font-bold text-white mb-2">
-                  {stat.num}
-                </div>
-                <div className="text-xs tracking-widest uppercase text-white/60 font-sans">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // Reviews
 const STAR_INDICES = [1, 2, 3, 4, 5];
 
@@ -828,7 +956,7 @@ function StarRating() {
   return (
     <div className="flex gap-1 mb-3">
       {STAR_INDICES.map((n) => (
-        <Star key={n} size={14} style={{ color: "#006039", fill: "#006039" }} />
+        <Star key={n} size={14} style={{ color: "#0B3D2E", fill: "#0B3D2E" }} />
       ))}
     </div>
   );
@@ -849,43 +977,44 @@ function Reviews() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-xs tracking-[0.4em] uppercase text-[#006039] mb-3 font-sans font-semibold">
+          <p className="text-xs tracking-[0.4em] uppercase text-[#0B3D2E] mb-3 font-sans font-semibold">
             What They Say
           </p>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#004a2b]">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#0B3D2E]">
             Customer Reviews
           </h2>
-          <div className="w-16 h-px bg-[#006039] mx-auto mt-6" />
+          <div className="w-16 h-px bg-[#0B3D2E] mx-auto mt-6" />
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayReviews.map((review, i) => (
             <motion.div
               key={review.customerName}
+              data-ocid={`reviews.item.${i + 1}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-white border border-border hover:border-[#006039]/40 transition-colors duration-300 p-6 sm:p-8 relative shadow-sm hover:shadow-md"
+              className="bg-white border border-border hover:border-[#0B3D2E]/40 transition-colors duration-300 p-6 sm:p-8 relative shadow-sm hover:shadow-md rounded-2xl"
             >
               <Quote
                 size={32}
                 className="absolute top-4 right-4"
-                style={{ color: "rgba(0,96,57,0.15)" }}
+                style={{ color: "rgba(11,61,46,0.12)" }}
               />
               <StarRating />
               <p className="text-[#1a1a1a]/80 leading-relaxed text-sm sm:text-base mb-6 font-sans italic">
-                "{review.reviewText}"
+                &ldquo;{review.reviewText}&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#006039] flex items-center justify-center text-white font-bold font-display text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#0B3D2E] flex items-center justify-center text-white font-bold font-display text-sm">
                   {review.customerName.charAt(0)}
                 </div>
                 <div>
                   <p className="font-semibold text-[#1a1a1a] text-sm font-sans">
                     {review.customerName}
                   </p>
-                  <p className="text-xs text-[#006039]/70 tracking-widest font-sans">
+                  <p className="text-xs text-[#0B3D2E]/70 tracking-widest font-sans">
                     Verified Buyer
                   </p>
                 </div>
@@ -898,13 +1027,13 @@ function Reviews() {
   );
 }
 
-// Contact
+// Contact / Final CTA
 function Contact() {
   return (
     <section
       id="contact"
       className="py-24 relative overflow-hidden"
-      style={{ background: "#006039" }}
+      style={{ background: "#0B3D2E" }}
     >
       <div className="absolute inset-0 pointer-events-none">
         <div
@@ -923,28 +1052,25 @@ function Contact() {
           transition={{ duration: 0.6 }}
         >
           <p className="text-xs tracking-[0.4em] uppercase text-white/70 mb-3 font-sans">
-            Reach Out
+            Let's Connect
           </p>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6">
-            Get In Touch
+            Ready to Upgrade Your Style?
           </h2>
           <div className="w-16 h-px bg-white/40 mx-auto mb-8" />
-          <p className="text-white/80 text-lg mb-4 font-sans">
-            Have a question or want to place a custom order?
+          <p className="text-white/80 text-lg mb-10 font-sans">
+            Order directly via WhatsApp — fast, easy, and reliable.
           </p>
-          <p className="text-white/80 mb-10 font-sans">
-            Reach us directly on WhatsApp — we respond fast.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <div className="flex justify-center mb-8">
             <a
               data-ocid="contact.primary_button"
               href={WHATSAPP_BASE}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-10 py-4 bg-white text-[#006039] font-semibold text-xs tracking-widest uppercase hover:bg-white/90 transition-colors"
+              className="btn-green inline-flex items-center gap-3 px-12 py-5 text-sm"
             >
-              <SiWhatsapp size={20} />
-              Chat on WhatsApp
+              <SiWhatsapp size={22} />
+              Order on WhatsApp
             </a>
           </div>
           <p className="text-white font-semibold text-xl tracking-widest font-sans">
@@ -965,7 +1091,7 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
   return (
     <footer
       className="border-t border-white/10 py-12 sm:py-16"
-      style={{ background: "#004a2b" }}
+      style={{ background: "#0B3D2E" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid sm:grid-cols-3 gap-8 mb-10">
@@ -973,10 +1099,10 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
             <div className="font-display text-2xl font-bold tracking-widest text-white mb-3">
               AF COLLECTION
             </div>
-            <p className="text-white/60 text-sm font-sans">
+            <p className="text-white/60 text-sm font-sans mb-4">
               Dress Different. Lead the Style.
             </p>
-            <div className="mt-4">
+            <div className="flex flex-col gap-2">
               <a
                 href={WHATSAPP_BASE}
                 target="_blank"
@@ -985,6 +1111,16 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
               >
                 <SiWhatsapp size={16} />
                 +91 7977433269
+              </a>
+              <a
+                href="https://www.instagram.com/af.collection"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-ocid="footer.link"
+                className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors font-sans"
+              >
+                <SiInstagram size={16} />
+                @af.collection
               </a>
             </div>
           </div>
@@ -1010,10 +1146,10 @@ function Footer({ onNav }: { onNav: (id: string) => void }) {
               Collections
             </h4>
             <div className="flex flex-col gap-2">
-              {CATEGORIES.map((cat) => (
+              {NEW_CATEGORIES.map((cat) => (
                 <button
                   type="button"
-                  key={cat.key}
+                  key={cat.label}
                   onClick={() => onNav("products")}
                   className="text-left text-sm text-white/50 hover:text-white transition-colors font-sans"
                 >
@@ -1055,15 +1191,13 @@ function FloatingWhatsApp() {
       transition={{ delay: 2, type: "spring", stiffness: 200 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#006039] rounded-full flex items-center justify-center shadow-lg transition-colors"
-      style={{
-        boxShadow: "0 4px 20px rgba(0, 96, 57, 0.5)",
-      }}
+      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#0B3D2E] rounded-full flex items-center justify-center shadow-lg"
+      style={{ boxShadow: "0 4px 20px rgba(11, 61, 46, 0.5)" }}
       aria-label="Chat on WhatsApp"
     >
       <SiWhatsapp size={28} className="text-white" />
       <motion.span
-        className="absolute inset-0 rounded-full bg-[#006039]"
+        className="absolute inset-0 rounded-full bg-[#0B3D2E]"
         animate={{ scale: [1, 1.4], opacity: [0.5, 0] }}
         transition={{
           repeat: Number.POSITIVE_INFINITY,
@@ -1090,23 +1224,19 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleCategoryFilter = (cat: string) => {
-    setActiveFilter(cat);
-    scrollTo("products");
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar onNav={scrollTo} />
       <main>
-        <Hero onShopNow={() => scrollTo("products")} />
-        <Categories onFilter={handleCategoryFilter} />
+        <Hero onShopNow={() => scrollTo("trending")} />
+        <TrendingCollection />
+        <Categories onScrollToProducts={() => scrollTo("products")} />
         <WatchCollection />
+        <WhyChooseUs />
         <Products
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
         />
-        <About />
         <Reviews />
         <Contact />
       </main>
